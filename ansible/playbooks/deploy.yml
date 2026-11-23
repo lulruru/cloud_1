@@ -1,0 +1,7 @@
+---
+- name: Deploy Cloud-1 infrastructure
+  hosts: cloud
+  become: true
+
+  roles:
+    - server

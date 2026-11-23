@@ -1,0 +1,22 @@
+---
+- name: Update apt package cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+
+- name: Upgrade installed packages
+  ansible.builtin.apt:
+    upgrade: safe
+  become: true
+
+- name: Install essential packages
+  ansible.builtin.apt:
+    name:
+      - curl
+      - git
+      - ca-certificates
+      - gnupg
+      - unzip
+    state: present
+  become: true
