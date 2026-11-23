@@ -1,0 +1,27 @@
+---
+- name: Deploy Docker application
+  when: deploy_application | bool
+  block:
+
+    - name: Create application directory
+      ansible.builtin.file:
+        path: "{{ app_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Copy application files to server
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../srcs/"
+        dest: "{{ app_dir }}/"
+        owner: root
+        group: root
+        mode: preserve
+        directory_mode: '0755'
+
+    - name: Build and start Docker containers
+      community.docker.docker_compose_v2:
+        project_src: "{{ app_dir }}"
+        state: present
+        build: always
