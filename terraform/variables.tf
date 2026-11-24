@@ -29,6 +29,6 @@ variable "admin_username" {
 }
 
 variable "ssh_public_keys" {
-  type        = list(string)
+  type        = set(string)
   description = "SSH public keys for both teammates"
 }

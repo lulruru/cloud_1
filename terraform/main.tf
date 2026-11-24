@@ -118,3 +118,11 @@ resource "azurerm_linux_virtual_machine" "vm" {
 	}
 }
 
+resource "local_file" "ansible_inventory" {
+	content = templatefile("${path.module}/inventory.tftpl", {
+		ips		= azurerm_public_ip.pip[*].ip.address
+		ssh_user = var.admin_username
+	})
+	filename	= "${path.module}/../ansible/inventory.ini"
+	depends_on	= [azurerm_linux_virtual_machine.vm]
+}
