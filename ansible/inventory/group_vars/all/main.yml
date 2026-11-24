@@ -1,3 +1,7 @@
 ---
 app_dir: /opt/cloud-1
 deploy_application: false
+
+sql_database: wordpress
+sql_user: wordpress
+domain_name: "{{ ansible_host }}"

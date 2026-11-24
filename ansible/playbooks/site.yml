@@ -2,8 +2,9 @@
 - name: Configure Cloud-1 server
   hosts: cloud
   become: true
-  
+
   roles:
     - server
+    - firewall
     - docker
     - application
