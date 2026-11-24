@@ -13,7 +13,7 @@ export PATH := $(BIN_DIR):$(ANSIBLE_VENV_DIR)/bin:$(AZ_VENV_DIR)/bin:$(PATH)
 
 .PHONY: tools configure-zsh install-tf install-ansible install-az clean-tools \
 	ansible-deps ansible-check ansible-deploy \
-	terraform-init terraform-plan terraform-apply deploy
+	terraform-init terraform-plan terraform-apply deploy turn-off
 
 tools: install-tf install-ansible install-az configure-zsh
 
@@ -78,3 +78,12 @@ terraform-apply: $(TF_BIN) $(AZ_BIN) configure-zsh terraform-init
 
 deploy: terraform-apply
 	$(MAKE) ansible-deploy
+
+turn-off: $(ANSIBLE_PLAYBOOK_BIN) $(AZ_BIN)
+	cd ansible && "$(ANSIBLE_VENV_DIR)/bin/ansible" all \
+		-i inventory.ini \
+		-b \
+		-m ansible.builtin.systemd_service \
+		-a "name=docker state=stopped"
+	@ids="$$( "$(AZ_BIN)" vm list --resource-group "cloud1-rg" --query "[].id" -o tsv )"; \
+	test -n "$$ids" && "$(AZ_BIN)" vm deallocate --ids $$ids || echo "No Azure VMs found"
