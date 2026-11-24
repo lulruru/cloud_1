@@ -2,7 +2,6 @@
 - name: Deploy Docker application
   when: deploy_application | bool
   block:
-
     - name: Create application directory
       ansible.builtin.file:
         path: "{{ app_dir }}"
@@ -20,8 +19,17 @@
         mode: preserve
         directory_mode: '0755'
 
+    - name: Generate Docker environment file
+      ansible.builtin.template:
+        src: .env.j2
+        dest: "{{ app_dir }}/.env"
+        owner: root
+        group: root
+        mode: '0600'
+      no_log: true
+
     - name: Build and start Docker containers
       community.docker.docker_compose_v2:
         project_src: "{{ app_dir }}"
         state: present
-        build: always
+        build: policy

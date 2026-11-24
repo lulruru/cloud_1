@@ -5,6 +5,7 @@
       - ca-certificates
       - curl
       - python3-apt
+      - python3-debian
     state: present
     update_cache: true
 
@@ -26,11 +27,25 @@
   changed_when: false
 
 - name: Add Docker repository
-  ansible.builtin.apt_repository:
-    repo: "deb [arch={{ docker_arch.stdout }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
-    filename: docker
+  ansible.builtin.deb822_repository:
+    name: docker
+    types:
+      - deb
+    uris: https://download.docker.com/linux/ubuntu
+    suites:
+      - "{{ ansible_distribution_release }}"
+    components:
+      - stable
+    architectures:
+      - "{{ docker_arch.stdout }}"
+    signed_by: /etc/apt/keyrings/docker.asc
     state: present
+  register: docker_repository
+
+- name: Update apt cache after adding Docker repository
+  ansible.builtin.apt:
     update_cache: true
+  when: docker_repository.changed
 
 - name: Install Docker Engine and Compose
   ansible.builtin.apt:
