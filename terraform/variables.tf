@@ -1,7 +1,7 @@
 variable "location" {
   type        = string
   description = "Deployment region"
-  default     = "italynorth"
+  default     = "spaincentral"
 }
 
 variable "prefix" {
