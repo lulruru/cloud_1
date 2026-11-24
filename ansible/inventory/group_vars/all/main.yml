@@ -5,3 +5,9 @@ deploy_application: false
 sql_database: wordpress
 sql_user: wordpress
 domain_name: "{{ ansible_host }}"
+
+wp_admin: admin42
+wp_admin_email: admin@example.com
+
+wp_user: editor42
+wp_user_email: editor@example.com
