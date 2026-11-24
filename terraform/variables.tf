@@ -1,7 +1,7 @@
 variable "location" {
   type        = string
-  description = "Région ou localisation de déploiement"
-  default     = "francecentral"
+  description = "Deployment region"
+  default     = "italynorth"
 }
 
 variable "prefix" {
@@ -19,7 +19,7 @@ variable "vm_count" {
 variable "vm_size" {
   type        = string
   description = "Azure VM size"
-  default     = "Standard_B2s"
+  default     = "Standard_B2s_v2"
 }
 
 variable "admin_username" {
