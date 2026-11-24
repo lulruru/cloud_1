@@ -1,0 +1,9 @@
+location = "italynorth"
+prefix = "cloud1"
+vm_count = 1
+vm_size = "Standard_B2s_v2"
+
+
+ssh_public_keys = [
+	"ssh-key-example"
+]
